@@ -49,6 +49,13 @@ Two Button mode, it's still recommended you include the file to prevent
 errors, but you can simply disable this mode in settings.
 
 ### Configuration
+
+To access the configuration section:
+
+1. Go to `Tools`, and select the `Add-ons` option from the dropdown.
+2. In the `Add-ons` window, select `Auto Ease Factor`.
+3. On the right-hand side of the `Add-ons` window, click on `Config`. This opens up the configuration `JSON` options.
+
 There are a few options that can be configured by editing the addon:
 
 1. 'target_ratio' is the success rate you want to aim for (e.g. 0.85 for an 85%
