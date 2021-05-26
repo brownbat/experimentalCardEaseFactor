@@ -1,14 +1,13 @@
 # inspired by https://eshapard.github.io/
 
-import math
 
 # anki interfaces
+from PyQt5.QtWidgets import QAction
 from anki import version
 from aqt import mw
 from aqt import gui_hooks
 from aqt import reviewer
 from aqt.utils import tooltip
-from aqt.qt import QMessageBox
 from anki.lang import _
 
 
@@ -36,7 +35,9 @@ gui_hooks.reviewer_did_show_question.append(set_button_mode)
 
 
 if semver.Version(version) >= semver.Version("2.1.26"):
-    from . import deck_settings
+    # this import has the effect of adding options to the deck settings
+    from . import deck_settings 
+
     # window vs. widget error
     # from . import menu_action
 
@@ -67,7 +68,6 @@ def get_current_config(deck_id):
     current_config = {**defaults, **config}
 
     # deck name to list of parent deck names
-    
     deck_name = mw.col.decks.get(deck_id)['name']
 
     def parent_deck(dn):
@@ -294,5 +294,37 @@ def adjust_factor(ease_tuple,
         display_stats(new_answer)
     return ease_tuple
 
+
+def adjust_deck(deck_id):
+    deck_name = mw.col.decks.nameOrNone(deck_id)
+    card_ids = mw.col.find_cards(f'deck:"{deck_name}"')
+    for card_id in card_ids:
+        card = mw.col.getCard(card_id)
+        card.factor = suggested_factor(card)
+        card.flush()
+
+
+def adjust_all_decks():
+    for x in mw.col.decks.all_names_and_ids():
+        deck_id, deck_name = str(x.id), x.name
+        settings_for_cur_deck = get_current_config(deck_id)['deck_settings'].get(deck_name, None)
+        if settings_for_cur_deck and settings_for_cur_deck['enabled']:
+            adjust_deck(deck_id)
+
+
+def adjust_all_decks_if_enabled():
+    if mw.addonManager.getConfig(__name__)['enabled']: 
+        adjust_all_decks()
+
+
+def setup_adjust_all_decks_action():
+    a = QAction("autoEaseFactor: Adjust all ease factors", mw)
+    a.triggered.connect(adjust_all_decks)
+    mw.form.menuTools.addAction(a)
+
+
+setup_adjust_all_decks_action()
+
+gui_hooks.profile_will_close.append(adjust_all_decks_if_enabled)
 
 gui_hooks.reviewer_will_answer_card.append(adjust_factor)

@@ -10,19 +10,20 @@
     "reviews_only": false,
     "enabled": true,
     "deck_settings":{
-"Deck_1::Subdeck_1":{
-    "leash": 10000,
-    "max_ease": 4100,
-    "min_ease": 4000,
-    "moving_average_weight": 0.2,
-    "stats_enabled": true,
-    "stats_duration": 5000,
-    "target_ratio": 0.85,
-    "two_button_mode": true,
-    "reviews_only": false,
-    "enabled": true
-    },
-"Deck_1::Subdeck_2":{
-    "enabled": false,
+    "Deck_1::Subdeck_1":{
+        "leash": 10000,
+        "max_ease": 4100,
+        "min_ease": 4000,
+        "moving_average_weight": 0.2,
+        "stats_enabled": true,
+        "stats_duration": 5000,
+        "target_ratio": 0.85,
+        "two_button_mode": true,
+        "reviews_only": false,
+        "enabled": true
+        },
+    "Deck_1::Subdeck_2":{
+        "enabled": false
+        }
     }
 }

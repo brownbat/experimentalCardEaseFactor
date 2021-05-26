@@ -11,9 +11,6 @@ from anki.lang import _
 from aqt.utils import getFile, getSaveFile
 from ast import literal_eval
 
-# add on utilities
-from . import ease_calculator
-
 
 def announce(announcement):
     msg = QMessageBox(mw)
@@ -23,13 +20,8 @@ def announce(announcement):
 
 
 def adjust_ease_factors(deck_id):
-    from . import autoEaseFactor
-    deck_name = mw.col.decks.nameOrNone(deck_id)
-    card_ids = mw.col.find_cards(f'deck:"{deck_name}"')
-    for card_id in card_ids:
-        card = mw.col.getCard(card_id)
-        card.factor = autoEaseFactor.suggested_factor(card)
-        card.flush()
+    from .autoEaseFactor import adjust_deck    
+    adjust_deck(deck_id)
     announce("Ease adjustment complete!")
 
 
